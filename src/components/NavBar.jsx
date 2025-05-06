@@ -21,7 +21,7 @@ function NavBar({ activePage}) {
                     <div className="flex items-center">
                         <div className="hidden md:ml-6 md:flex md:space-x-8">
                             <button
-                                onClick={() => navigateTo('')}
+                                onClick={() => navigateTo('home')}
                                 className={`${activePage === 'home' ? 'text-blue-600' : 'text-gray-500'} px-3 py-2 text-sm font-medium`}
                             >
                                 Home
