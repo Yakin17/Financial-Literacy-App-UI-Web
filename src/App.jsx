@@ -9,6 +9,8 @@ import ProfilePage from './pages/ProfilePage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import { AuthProvider } from './contexts/AuthContext';
+import AdminPage from './pages/AdminPage';
+import { AdminRoute ,ProtectedRoute} from './components/ProtectedRoute';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -19,14 +21,39 @@ function App() {
         <div className="min-h-screen bg-background">
           <NavBar />
           <Routes>
-            <Route path="/" element={<HomePageUser />} />
-            <Route path="/home" element={<HomePageUser />} />
-            <Route path="/articles" element={<ArticlesPage />} />
-            <Route path="/articledetail/:id" element={<ArticleDetailPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/adminhomepage" element={
+              <AdminRoute>
+                <AdminPage />
+              </AdminRoute>
+            } />
+
+            <Route path="/home" element={
+              <ProtectedRoute>
+                <HomePageUser />
+              </ProtectedRoute>
+            } />
+            <Route path="/articles" element={
+              <ProtectedRoute>
+                <ArticlesPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/articledetail/:id" element={
+              <ProtectedRoute>
+                <ArticleDetailPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            } />
+
+            {/* Routes publiques */}
+            <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/admin" element={<Navigate to="/" />} /> {/* Placeholder for admin route */}
+
+            {/* Redirection */}
+            <Route path="/admin" element={<Navigate to="/adminhomepage" />} />
           </Routes>
         </div>
       </BrowserRouter>

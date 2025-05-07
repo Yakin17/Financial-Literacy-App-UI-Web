@@ -7,7 +7,7 @@ function HomePageUser({  }) {
     const navigate = useNavigate();
 
     const navigateTo = (path) => {
-        navigate(path);
+        navigate(`/${path}`);
     };
   return (
       <div className='bg-blue-600 py-24'>

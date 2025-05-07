@@ -12,11 +12,11 @@ const Login = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const { login } = useContext(AuthContext);
-    const navigate = useNavigate(); // Correction: typo dans useNavigate
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({
-            ...formData, // Correction: formData avec minuscule
+            ...formData,
             [e.target.name]: e.target.value
         });
     };
@@ -30,19 +30,25 @@ const Login = () => {
             const response = await axios.post(
                 'http://localhost:8080/api/auth/login', formData
             );
-            // Stocker le token et les informations utilisateur
+
+            // Extraction des données de la réponse
             const { token, id, username, nom, email, role } = response.data;
+
+            // Appel de la fonction login du contexte pour stocker les informations
             login({ token, id, username, nom, email, role });
 
+            // Redirection en fonction du rôle
             if (role === 'ROLE_ADMIN') {
-                navigate('/admin');
+                console.log("Utilisateur admin détecté, redirection vers /adminhomepage");
+                navigate('/adminhomepage');
             } else {
+                console.log("Utilisateur standard détecté, redirection vers /home");
                 navigate('/home');
             }
         } catch (err) {
             console.error('Erreur de connexion:', err);
             setError(
-                err.response?.data || 'Erreur lors de la connexion. Veuillez vérifier vos identifiants.' // Correction: data au lieu de dara
+                err.response?.data || 'Erreur lors de la connexion. Veuillez vérifier vos identifiants.'
             );
         } finally {
             setLoading(false);
