@@ -1,20 +1,15 @@
-
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from './../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const AdminHeader = ({ setSidebarOpen }) => {
     const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-
-    // Données admin fictives (à remplacer par des données réelles)
-    const admin = {
-        name: 'Admin Principal',
-        email: 'admin@financialliteracy.com',
-        avatar: 'https://via.placeholder.com/40'
-    };
+    const { currentUser, logout } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleLogout = () => {
-        // Implémentez la logique de déconnexion ici
-        console.log('Déconnexion...');
-        // Rediriger vers la page de connexion
+        logout();
+        navigate('/login');
     };
 
     return (
@@ -39,9 +34,11 @@ const AdminHeader = ({ setSidebarOpen }) => {
                         className="flex items-center space-x-2"
                         onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                     >
-                        <span className="hidden md:block text-sm font-medium text-gray-700">{admin.name}</span>
+                        <span className="hidden md:block text-sm font-medium text-gray-700">
+                            {currentUser?.nom || 'Admin'}
+                        </span>
                         <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
-                            {admin.name.charAt(0)}
+                            {currentUser?.nom ? currentUser.nom.charAt(0) : 'A'}
                         </div>
                     </button>
 
@@ -49,8 +46,9 @@ const AdminHeader = ({ setSidebarOpen }) => {
                     {profileDropdownOpen && (
                         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 ring-1 ring-black ring-opacity-5">
                             <div className="px-4 py-2 border-b">
-                                <p className="text-sm font-medium text-gray-900">{admin.name}</p>
-                                <p className="text-xs text-gray-500 truncate">{admin.email}</p>
+                                <p className="text-sm font-medium text-gray-900">{currentUser?.nom || 'Admin'}</p>
+                                <p className="text-xs text-gray-500 truncate">{currentUser?.email || 'admin@example.com'}</p>
+                                <p className="text-xs text-gray-500 truncate">{currentUser?.role || 'ROLE_ADMIN'}</p>
                             </div>
                             <a
                                 href="#profile"
@@ -58,12 +56,7 @@ const AdminHeader = ({ setSidebarOpen }) => {
                             >
                                 Profil
                             </a>
-                            <a
-                                href="#settings"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            >
-                                Paramètres
-                            </a>
+
                             <button
                                 onClick={handleLogout}
                                 className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
@@ -78,5 +71,4 @@ const AdminHeader = ({ setSidebarOpen }) => {
     );
 };
 
-
-export default AdminHeader
+export default AdminHeader;

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from './../contexts/AuthContext';
 
 // Icônes (vous pouvez utiliser heroicons ou un autre package d'icônes)
 const UsersIcon = () => (
@@ -20,6 +21,8 @@ const DashboardIcon = () => (
 );
 
 const AdminSidebar = ({ activeTab, setActiveTab, isOpen, setSidebarOpen }) => {
+    const { currentUser, isAdmin } = useContext(AuthContext);
+
     // Définir les éléments de navigation de la sidebar
     const navItems = [
         { id: 'dashboard', name: 'Tableau de bord', icon: <DashboardIcon /> },
@@ -44,6 +47,31 @@ const AdminSidebar = ({ activeTab, setActiveTab, isOpen, setSidebarOpen }) => {
                 </button>
             </div>
 
+            {/* Informations de l'utilisateur */}
+            {currentUser && (
+                <div className="px-4 py-4 border-b border-blue-700">
+                    <div className="flex items-center mb-2">
+                        <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium mr-3">
+                            {currentUser.nom ? currentUser.nom.charAt(0) : 'A'}
+                        </div>
+                        <div>
+                            <h3 className="font-medium">{currentUser.nom || 'Admin'}</h3>
+                            <p className="text-xs text-blue-300">{currentUser.email || 'admin@example.com'}</p>
+                        </div>
+                    </div>
+                    <div className="flex items-center mt-2">
+                        <div className="text-xs bg-blue-700 px-2 py-1 rounded inline-block">
+                            {currentUser.role || 'ROLE_ADMIN'}
+                        </div>
+                        {isAdmin() && (
+                            <div className="text-xs bg-green-600 px-2 py-1 rounded inline-block ml-2">
+                                Administrateur
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
             {/* Navigation */}
             <nav className="px-2 pt-4">
                 <ul className="space-y-1">
@@ -65,5 +93,4 @@ const AdminSidebar = ({ activeTab, setActiveTab, isOpen, setSidebarOpen }) => {
     );
 };
 
-
-export default AdminSidebar
+export default AdminSidebar;
