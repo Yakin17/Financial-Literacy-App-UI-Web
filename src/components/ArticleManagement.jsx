@@ -1,73 +1,74 @@
 import React, { useState, useEffect, useContext } from 'react';
 import SearchBar from './ui/SearchBar';
-import { utilisateurService } from '../services/apiService';
-import UserDetails from './UserDetails';
+import { articleService } from '../services/apiService';
 import { AuthContext } from '../contexts/AuthContext';
-import AddUserModal from './AddUserModal';
-import EditUserModal from './EditUserModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
+import ArticleDetails from './ArticleDetails'; // Import missing ArticleDetails component
+import AddArticleModal from './AddArticleModal'; // Import missing AddArticleModal component
+import EditArticleModal from './EditArticleModal'; // Import missing EditArticleModal component
 
-const UserManagement = () => {
-    const [users, setUsers] = useState([]);
-    const [filteredUsers, setFilteredUsers] = useState([]);
+const ArticleManagement = () => {
+    const [articles, setArticles] = useState([]);
+    const [filteredArticles, setFilteredArticles] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [showUserDetails, setShowUserDetails] = useState(false);
+    const [selectedArticle, setSelectedArticle] = useState(null);
+    const [showArticleDetails, setShowArticleDetails] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { getToken, currentUser } = useContext(AuthContext); // Modified line: added currentUser
+    const { getToken, currentUser } = useContext(AuthContext);
 
-    const fetchUsers = async () => {
+    const fetchArticles = async () => {
         try {
             setLoading(true);
-            const response = await utilisateurService.getAll();
-            setUsers(response.data);
-            setFilteredUsers(response.data);
+            const response = await articleService.getAll();
+            setArticles(response.data);
+            setFilteredArticles(response.data);
             setError(null);
+
         } catch (err) {
-            console.error("Erreur lors de la récupération des utilisateurs", err);
-            setError("Impossible de charger les utilisateurs. Veuillez réessayer.");
+            console.error("Erreur lors de la récupération des articles", err);
+            setError("Impossible de charger les articles. Veuillez réessayer.");
+
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     useEffect(() => {
-        // Vérifier si le token est disponible
         if (getToken()) {
-            fetchUsers();
+            fetchArticles();
         }
     }, [getToken]);
 
     useEffect(() => {
         if (searchTerm) {
-            const filtered = users.filter(
-                user =>
-                    user.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+            const filtered = articles.filter(
+                article =>
+                    article.titre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    article.contenu.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    article.auteurNom.toLowerCase().includes(searchTerm.toLowerCase())
             );
-            setFilteredUsers(filtered);
+            setFilteredArticles(filtered);
         } else {
-            setFilteredUsers(users);
+            setFilteredArticles(articles);
         }
-    }, [searchTerm, users]);
+    }, [searchTerm, articles]);
 
     const handleSearch = (value) => {
         setSearchTerm(value);
     };
 
-    const viewUserDetails = (user) => {
-        setSelectedUser(user);
-        setShowUserDetails(true);
+    const viewArticleDetails = (article) => {
+        setSelectedArticle(article);
+        setShowArticleDetails(true);
     };
 
-    const closeUserDetails = () => {
-        setShowUserDetails(false);
-        setSelectedUser(null);
+    const closeArticleDetails = () => {
+        setShowArticleDetails(false);
+        setSelectedArticle(null);
     };
 
     const openAddModal = () => {
@@ -78,57 +79,72 @@ const UserManagement = () => {
         setShowAddModal(false);
     };
 
-    const openEditModal = (user) => {
-        setSelectedUser(user);
+    const openEditModal = (article) => {
+        setSelectedArticle(article);
         setShowEditModal(true);
     };
 
     const closeEditModal = () => {
         setShowEditModal(false);
-        setSelectedUser(null);
+        setSelectedArticle(null);
     };
 
-    const openDeleteModal = (user) => {
-        setSelectedUser(user);
+    const openDeleteModal = (article) => {
+        setSelectedArticle(article);
         setShowDeleteModal(true);
     };
 
     const closeDeleteModal = () => {
         setShowDeleteModal(false);
-        setSelectedUser(null);
+        setSelectedArticle(null);
     };
 
-    const handleAddUser = async (userData) => {
+    const handleAddArticle = async (articleData) => {
         try {
-            await utilisateurService.create(userData);
-            fetchUsers(); // Rafraîchir la liste après l'ajout
+            await articleService.create(articleData);
+            fetchArticles();
             closeAddModal();
         } catch (err) {
-            console.error("Erreur lors de la création de l'utilisateur", err);
-            alert("Une erreur s'est produite lors de la création de l'utilisateur");
+            console.error("Erreur lors de la création de l'article", err);
+            alert("Une erreur s'est produite lors de la création de l'article");
         }
     };
 
-    const handleEditUser = async (userData) => {
+    const handleEditArticle = async (articleData) => {
         try {
-            await utilisateurService.update(selectedUser.id, userData);
-            fetchUsers(); // Rafraîchir la liste après la modification
+            await articleService.update(selectedArticle.id, articleData);
+            fetchArticles();
             closeEditModal();
         } catch (err) {
-            console.error("Erreur lors de la modification de l'utilisateur", err);
-            alert("Une erreur s'est produite lors de la modification de l'utilisateur");
+            console.error("Erreur lors de la modification de l'article", err);
+            alert("Une erreur s'est produite lors de la modification de l'article");
         }
     };
 
-    const handleDeleteUser = async () => {
+    const handleDeleteArticle = async () => {
         try {
-            await utilisateurService.delete(selectedUser.id);
-            fetchUsers(); // Rafraîchir la liste après la suppression
+            await articleService.delete(selectedArticle.id);
+            fetchArticles();
             closeDeleteModal();
         } catch (err) {
-            console.error("Erreur lors de la suppression de l'utilisateur", err);
-            alert("Une erreur s'est produite lors de la suppression de l'utilisateur");
+            console.error("Erreur lors de la suppression de l'article", err);
+            alert("Une erreur s'est produite lors de la suppression de l'article");
         }
+    };
+
+    const truncateText = (text, maxLength = 100) => {
+        return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+    };
+
+    const formatDate = (dateString) => {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        return new Date(dateString).toLocaleDateString('fr-FR', options);
     };
 
     if (loading) {
@@ -151,17 +167,17 @@ const UserManagement = () => {
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-gray-800">Gestion des Utilisateurs</h2>
+                <h2 className="text-2xl font-bold text-gray-800">Gestion des Articles</h2>
                 <button
                     onClick={openAddModal}
                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                    Ajouter un utilisateur
+                    Ajouter un article
                 </button>
             </div>
 
             <SearchBar
-                placeholder="Rechercher un utilisateur..."
+                placeholder="Rechercher un article..."
                 value={searchTerm}
                 onChange={handleSearch}
             />
@@ -175,19 +191,16 @@ const UserManagement = () => {
                                     ID
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Nom
+                                    Titre
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Nom d'utilisateur
+                                    Aperçu du contenu
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Email
+                                    Auteur
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Rôle
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Date de création
+                                    Date de publication
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Actions
@@ -195,45 +208,39 @@ const UserManagement = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {filteredUsers.length > 0 ? (
-                                filteredUsers.map((user) => (
-                                    <tr key={user.id} className="hover:bg-gray-50">
+                            {filteredArticles.length > 0 ? (
+                                filteredArticles.map((article) => (
+                                    <tr key={article.id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {user.id}
+                                            {article.id}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm font-medium text-gray-900">{user.nom}</div>
+                                            <div className="text-sm font-medium text-gray-900">{article.titre}</div>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <div className="text-sm text-gray-900 line-clamp-2">{truncateText(article.contenu)}</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">{user.username}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">{user.email}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.role === 'ROLE_ADMIN' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
-                                                }`}>
-                                                {user.role === 'ROLE_ADMIN' ? 'Admin' : 'Utilisateur'}
-                                            </span>
+                                            <div className="text-sm text-gray-900">{article.auteurNom}</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {new Date(user.dateCreation).toLocaleDateString('fr-FR')}
+                                            {formatDate(article.datePublication)}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <button
-                                                onClick={() => viewUserDetails(user)}
+                                                onClick={() => viewArticleDetails(article)}
                                                 className="text-blue-600 hover:text-blue-900 mr-3"
                                             >
                                                 Voir
                                             </button>
                                             <button
-                                                onClick={() => openEditModal(user)}
+                                                onClick={() => openEditModal(article)}
                                                 className="text-green-600 hover:text-green-900 mr-3"
                                             >
                                                 Éditer
                                             </button>
                                             <button
-                                                onClick={() => openDeleteModal(user)}
+                                                onClick={() => openDeleteModal(article)}
                                                 className="text-red-600 hover:text-red-900"
                                             >
                                                 Supprimer
@@ -243,8 +250,8 @@ const UserManagement = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="7" className="px-6 py-4 text-center text-sm text-gray-500">
-                                        Aucun utilisateur trouvé
+                                    <td colSpan="6" className="px-6 py-4 text-center text-sm text-gray-500">
+                                        Aucun article trouvé
                                     </td>
                                 </tr>
                             )}
@@ -253,50 +260,51 @@ const UserManagement = () => {
                 </div>
             </div>
 
-            {/* Modal pour afficher les détails de l'utilisateur */}
-            {showUserDetails && selectedUser && (
-                <UserDetails
-                    user={selectedUser}
-                    onClose={closeUserDetails}
+            {/* Modal pour afficher les détails de l'article */}
+            {showArticleDetails && selectedArticle && (
+                <ArticleDetails
+                    article={selectedArticle}
+                    onClose={closeArticleDetails}
                     onEdit={() => {
-                        closeUserDetails();
-                        openEditModal(selectedUser);
+                        closeArticleDetails();
+                        openEditModal(selectedArticle);
                     }}
                     onDelete={() => {
-                        closeUserDetails();
-                        openDeleteModal(selectedUser);
+                        closeArticleDetails();
+                        openDeleteModal(selectedArticle);
                     }}
                 />
             )}
 
-            {/* Modal pour ajouter un utilisateur */}
+            {/* Modal pour ajouter un article */}
             {showAddModal && (
-                <AddUserModal
+                <AddArticleModal
                     onClose={closeAddModal}
-                    onSave={handleAddUser}
+                    onSave={handleAddArticle}
                 />
             )}
 
-            {/* Modal pour modifier un utilisateur */}
-            {showEditModal && selectedUser && (
-                <EditUserModal
-                    user={selectedUser}
+            {/* Modal pour modifier un article */}
+            {showEditModal && selectedArticle && (
+                <EditArticleModal
+                    article={selectedArticle}
                     onClose={closeEditModal}
-                    onSave={handleEditUser}
+                    onSave={handleEditArticle}
                 />
             )}
 
             {/* Modal de confirmation de suppression */}
-            {showDeleteModal && selectedUser && (
+            {showDeleteModal && selectedArticle && (
                 <DeleteConfirmModal
-                    item={selectedUser}
-                    itemType="user"
+                    item={selectedArticle}
+                    itemType="article"
                     onClose={closeDeleteModal}
-                    onConfirm={handleDeleteUser}
+                    onConfirm={handleDeleteArticle}
                 />
             )}
         </div>
-    );
-};
 
-export default UserManagement;
+    );
+}
+
+export default ArticleManagement

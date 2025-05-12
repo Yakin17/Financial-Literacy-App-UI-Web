@@ -1,9 +1,35 @@
-import React from 'react'
+import React from 'react';
 
+function DeleteConfirmModal({ item, itemType, onClose, onConfirm }) {
+  if (!item) return null;
 
+  const getItemDetails = () => {
+    if (itemType === 'user') {
+      return (
+        <>
+          <p className="font-medium text-gray-900">{item.nom}</p>
+          <p className="text-gray-600">{item.email}</p>
+        </>
+      );
+    } else if (itemType === 'article') {
+      return (
+        <>
+          <p className="font-medium text-gray-900">{item.titre}</p>
+          <p className="text-gray-600">{item.auteurNom}</p>
+        </>
+      );
+    }
+    return <p className="text-gray-600">Type d'élément inconnu</p>;
+  };
 
-function DeleteConfirmModal({ user, onClose, onConfirm }) {
-  if (!user) return null;
+  const getItemName = () => {
+    if (itemType === 'user') {
+      return "l'utilisateur";
+    } else if (itemType === 'article') {
+      return "l'article";
+    }
+    return "l'élément";
+  };
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
@@ -22,12 +48,11 @@ function DeleteConfirmModal({ user, onClose, onConfirm }) {
 
         <div className="mb-6">
           <p className="text-sm text-gray-600">
-            Êtes-vous sûr de vouloir supprimer l'utilisateur suivant? Cette action est irréversible.
+            Êtes-vous sûr de vouloir supprimer {getItemName()} suivant? Cette action est irréversible.
           </p>
           <div className="mt-3 p-3 bg-gray-50 rounded-md">
-            <p className="font-medium text-gray-900">{user.nom}</p>
-            <p className="text-gray-600">{user.email}</p>
-            <p className="text-gray-600">ID: {user.id}</p>
+            {getItemDetails()}
+            <p className="text-gray-600">ID: {item.id}</p>
           </div>
         </div>
 
@@ -49,7 +74,7 @@ function DeleteConfirmModal({ user, onClose, onConfirm }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default DeleteConfirmModal
+export default DeleteConfirmModal;

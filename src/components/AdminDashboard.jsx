@@ -4,6 +4,7 @@ import AdminSidebar from './AdminSidebar';
 import AdminHeader from './AdminHeader';
 import UserManagement from './UserManagement';
 import { AuthContext } from '../contexts/AuthContext';
+import ArticleManagement from './ArticleManagement';
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('users');
@@ -27,6 +28,9 @@ const AdminDashboard = () => {
         switch (activeTab) {
             case 'users':
                 return <UserManagement />;
+            
+            case 'articles':
+                return <ArticleManagement/>;
             // D'autres sections peuvent être ajoutées ici (articles, scores, etc.)
             default:
                 return <UserManagement />;
