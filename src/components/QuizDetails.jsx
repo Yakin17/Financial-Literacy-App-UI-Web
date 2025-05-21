@@ -1,11 +1,75 @@
-import React from 'react'
+import React from 'react';
 
-function QuizDetails() {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const QuizDetails = ({ quiz, articleTitle, onClose, onEdit, onDelete }) => {
+    return (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl">
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-bold text-gray-800">Détails du quiz</h2>
+                    <button
+                        onClick={onClose}
+                        className="text-gray-500 hover:text-gray-700"
+                    >
+                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
 
-export default QuizDetails
+                <div className="space-y-4 mb-6">
+                    <div>
+                        <h3 className="text-sm font-medium text-gray-500">ID</h3>
+                        <p className="mt-1 text-sm text-gray-900">{quiz.id}</p>
+                    </div>
+
+                    <div>
+                        <h3 className="text-sm font-medium text-gray-500">Article associé</h3>
+                        <p className="mt-1 text-sm text-gray-900">{articleTitle} (ID: {quiz.articleId})</p>
+                    </div>
+
+                    <div>
+                        <h3 className="text-sm font-medium text-gray-500">Question</h3>
+                        <p className="mt-1 text-sm text-gray-900">{quiz.question}</p>
+                    </div>
+
+                    <div>
+                        <h3 className="text-sm font-medium text-gray-500 text-green-600">Réponse correcte</h3>
+                        <p className="mt-1 text-sm text-gray-900 border-l-4 border-green-500 pl-2">{quiz.reponseCorrecte}</p>
+                    </div>
+
+                    <div>
+                        <h3 className="text-sm font-medium text-gray-500 text-red-600">Réponses incorrectes</h3>
+                        <ul className="mt-1 space-y-2">
+                            <li className="text-sm text-gray-900 border-l-4 border-red-300 pl-2">{quiz.reponseInc1}</li>
+                            <li className="text-sm text-gray-900 border-l-4 border-red-300 pl-2">{quiz.reponseInc2}</li>
+                            <li className="text-sm text-gray-900 border-l-4 border-red-300 pl-2">{quiz.reponseInc3}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div className="flex justify-end space-x-3">
+                    <button
+                        onClick={onEdit}
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    >
+                        Modifier
+                    </button>
+                    <button
+                        onClick={onDelete}
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                    >
+                        Supprimer
+                    </button>
+                    <button
+                        onClick={onClose}
+                        className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default QuizDetails;
