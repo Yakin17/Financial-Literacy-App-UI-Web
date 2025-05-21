@@ -42,6 +42,7 @@ function App() {
                 <ArticleDetailPage />
               </ProtectedRoute>
             } />
+           
             <Route path="/profile" element={
               <ProtectedRoute>
                 <ProfilePage />

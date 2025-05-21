@@ -5,6 +5,7 @@ import AdminHeader from './AdminHeader';
 import UserManagement from './UserManagement';
 import { AuthContext } from '../contexts/AuthContext';
 import ArticleManagement from './ArticleManagement';
+import QuizManagement from './QuizManagement';
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('users');
@@ -30,7 +31,9 @@ const AdminDashboard = () => {
                 return <UserManagement />;
             
             case 'articles':
-                return <ArticleManagement/>;
+                return <ArticleManagement />;
+            case 'quiz':
+                return <QuizManagement/>
             // D'autres sections peuvent être ajoutées ici (articles, scores, etc.)
             default:
                 return <UserManagement />;

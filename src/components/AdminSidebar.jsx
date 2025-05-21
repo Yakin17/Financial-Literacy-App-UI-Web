@@ -27,7 +27,8 @@ const AdminSidebar = ({ activeTab, setActiveTab, isOpen, setSidebarOpen }) => {
     const navItems = [
         { id: 'dashboard', name: 'Tableau de bord', icon: <DashboardIcon /> },
         { id: 'users', name: 'Utilisateurs', icon: <UsersIcon /> },
-        { id: 'articles', name: 'Articles', icon: <ArticlesIcon /> }
+        { id: 'articles', name: 'Articles', icon: <ArticlesIcon /> },
+        
     ];
 
     return (
