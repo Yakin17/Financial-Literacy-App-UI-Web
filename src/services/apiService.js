@@ -26,6 +26,19 @@ const utilisateurService = {
     delete: (id) => api.delete(`/utilisateurs/${id}`)
 };
 
+const scoreService = {
+    getAll: () => api.get('/scores'),
+    getById: (id) => api.get(`/scores/${id}`),
+    getByUtilisateur: (utilisateurId) => api.get(`/scores/utilisateur/${utilisateurId}`),
+    getByQuiz: (quizId) => api.get(`/scores/quiz/${quizId}`),
+    create: (scoreData) => api.post('/scores', scoreData),
+    update: (id, scoreData) => api.put(`/scores/${id}`, scoreData),
+    delete: (id) => api.delete(`/scores/${id}`),
+    checkQuizCompletion: (utilisateurId, quizId) => api.get(`/scores/check/${utilisateurId}/${quizId}`),
+    submitQuizScore: (utilisateurId, quizId, points) => api.post(`/scores/submit/${utilisateurId}/${quizId}/${points}`),
+    saveUserQuizScore: (utilisateurId, quizId, points) => api.post(`/scores/submit/${utilisateurId}/${quizId}/${points}`)
+};
+
 
 const articleService = {
     getAll: () => api.get('/articles'),
@@ -37,6 +50,8 @@ const articleService = {
 };
 
 
+
+
 const quizService = {
     getAll: () => api.get('/quizzes'),
     getById: (id) => api.get(`/quizzes/${id}`),
@@ -45,16 +60,7 @@ const quizService = {
     update: (id, quizData) => api.put(`/quizzes/${id}`, quizData),
     delete: (id) => api.delete(`/quizzes/${id}`)
 };
-
-const scoreService = {
-    getAll: () => api.get('/scores'),
-    getById: (id) => api.get(`/scores/${id}`),
-    getByUtilisateur: (utilisateurId) => api.get(`/scores/utilisateur/${utilisateurId}`),
-    getByQuiz: (quizId) => api.get(`/scores/quiz/${quizId}`),
-    create: (scoreData) => api.post('/scores', scoreData),
-    update: (id, scoreData) => api.put(`/scores/${id}`, scoreData),
-    delete: (id) => api.delete(`/scores/${id}`)
-};
+C
 
 const authService = {
     login: (credentials) => api.post('/auth/login', credentials),
