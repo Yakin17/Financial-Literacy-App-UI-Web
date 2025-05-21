@@ -38,12 +38,12 @@ const articleService = {
 
 
 const quizService = {
-    getAll: () => api.get('/quiz'),
-    getById: (id) => api.get(`/quiz/${id}`),
-    getByArticle: (articleId) => api.get(`/quiz/article/${articleId}`),
-    create: (quizData) => api.post('/quiz', quizData),
-    update: (id, quizData) => api.put(`/quiz/${id}`, quizData),
-    delete: (id) => api.delete(`/quiz/${id}`)
+    getAll: () => api.get('/quizzes'),
+    getById: (id) => api.get(`/quizzes/${id}`),
+    getByArticle: (articleId) => api.get(`/quizzes/article/${articleId}`),
+    create: (quizData) => api.post('/quizzes', quizData),
+    update: (id, quizData) => api.put(`/quizzes/${id}`, quizData),
+    delete: (id) => api.delete(`/quizzes/${id}`)
 };
 
 const scoreService = {

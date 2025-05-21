@@ -33,7 +33,7 @@ const AdminDashboard = () => {
             case 'articles':
                 return <ArticleManagement />;
             case 'quiz':
-                return <QuizManagement/>
+                return <QuizManagement />;
             // D'autres sections peuvent être ajoutées ici (articles, scores, etc.)
             default:
                 return <UserManagement />;

@@ -18,6 +18,13 @@ function DeleteConfirmModal({ item, itemType, onClose, onConfirm }) {
           <p className="text-gray-600">{item.auteurNom}</p>
         </>
       );
+    } else if (itemType === 'quiz') {
+      return (
+        <>
+          <p className="font-medium text-gray-900">{item.question}</p>
+          <p className="text-gray-600">Réponse correcte: {item.reponseCorrecte}</p>
+        </>
+      );
     }
     return <p className="text-gray-600">Type d'élément inconnu</p>;
   };
@@ -27,6 +34,8 @@ function DeleteConfirmModal({ item, itemType, onClose, onConfirm }) {
       return "l'utilisateur";
     } else if (itemType === 'article') {
       return "l'article";
+    } else if (itemType === 'quiz') {
+      return "le quiz";
     }
     return "l'élément";
   };
